@@ -5,12 +5,12 @@ import logger from "./config/logges";
 const startServer = () => {
     const PORT = Config.PORT;
     try {
+
         app.listen(Config.PORT, () => {
-            // eslint-disable-next-line no-console
-            // console.log(`Listening on port ${PORT}`);
             // logger.debug('hola....boom')
             logger.info(`Listening on port ${PORT}`);
         });
+
     } catch (error: unknown) {
         // eslint-disable-next-line no-console
         // console.log(error);
