@@ -1,0 +1,22 @@
+/**
+ * to list all images : 'docker images'
+ * to list all the *running* containers : 'docker ps' : ps means processes
+ * to list all the containers : 'docker ps -a' : a means all
+ * to remove image : 'docker image rm name_of_image' : rm means remove, it will only remove image that is not in use
+ * to delete forcfully image : 'docker image rm name_of_image -f'
+ * to delete container : 'docker container rm name_of_container'
+`* to make a brand new docker image : `docker build -t myapp:v1 .` : v1 is nothing but tag of your app here v1 means version 1 and . means relative path
+ * to make and run container of the container of the avaliable image : 'docker run --name myapp_c -p 4000:4000 myapp:v1'  : myapp_c is container name, -p is port mapping that we can access the docker port from local, myapp:v1 is name of the image from which we make container
+ * docker run --rm -it -v ${PWD}:/usr/src/app -v /usr/src/app/node_modules --env-file ${PWD}/.env -p 5501:5501 -e NODE_ENV=development auth-service:dev
+  
+* to delete all images, all containers. all volumes : docker system prune -a
+ * to run a already created container : 'docker start name_of_container' 
+ * to stop the running container : 'docker stop name_of_container'  
+
+
+    * ------------------------ docker compose usage
+    * to run docker compose : 'docker-compose up'
+    * to stop docker compose : 'docker-compose down'
+    * to stop docker compose and remove the images with it as well as volumes : 'docker-compose down --rmi all -v'
+
+*/
