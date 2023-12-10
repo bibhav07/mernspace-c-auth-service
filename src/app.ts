@@ -6,7 +6,7 @@ import createHttp from "http-errors";
 const app = express();
 
 app.get("/", async (req, res, next) => {
-    const err = createHttp(401, "errrooorororo");
+    const err = createHttp(401, "error");
     return next(err);
     // res.send("welcome to auth service....");
 });
