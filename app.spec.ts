@@ -1,5 +1,5 @@
 import app from "./src/app";
-import { calculatediscount } from "./src/config/utils"
+import { calculatediscount } from "./src/config/utils";
 import request from "supertest";
 
 describe("App", () => {
@@ -8,10 +8,9 @@ describe("App", () => {
         expect(result).toBe(10);
     });
 
-
     it("should return 200 status", async () => {
         //calling the endpoint by initializing the app
         const response = await request(app).get("/").send();
         expect(response.statusCode).toBe(401);
-    })
-})
+    });
+});
