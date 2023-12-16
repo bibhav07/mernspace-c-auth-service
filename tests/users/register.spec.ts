@@ -6,20 +6,19 @@ import { truncateTables } from "../utils";
 import { User } from "../../src/entity/User";
 
 describe("POST /auth/register", () => {
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
 
-    beforeAll( async ()=>{
+    beforeAll(async () => {
         connection = await AppDataSource.initialize();
     });
 
-    beforeEach( async () => {
+    beforeEach(async () => {
         // database truncatse
         await truncateTables(connection);
     });
 
-    afterAll( async () => {
+    afterAll(async () => {
         await connection.destroy();
     });
 
@@ -71,16 +70,16 @@ describe("POST /auth/register", () => {
         it("should persist the user in the database", async () => {
             //A=Arrage, A=Act, A=Assert
             //---- arrage
-            const userData  = {
+            const userData = {
                 firstName: "Bibhav",
                 lastName: "Y",
                 email: "by@gmail.com",
-                password: "secret"
-            }
+                password: "secret",
+            };
             //---- act
             await request(app).post("/auth/register").send(userData);
             //---- assert
-            
+
             const userRepo = connection.getRepository(User);
             const users = await userRepo.find();
 
@@ -89,7 +88,6 @@ describe("POST /auth/register", () => {
             expect(users[0].lastName).toBe(userData.lastName);
             expect(users[0].email).toBe(userData.email);
             expect(users[0].password).toBe(userData.password);
-        
         });
     });
 
