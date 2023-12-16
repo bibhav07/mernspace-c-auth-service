@@ -7,6 +7,8 @@ import authRouter from "./routes/auth";
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/", async (req, res, next) => {
     const err = createHttp(401, "error");
     return next(err);
