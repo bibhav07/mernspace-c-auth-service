@@ -155,17 +155,17 @@ describe("POST /auth/register", () => {
                 password: "secret",
             };
             const userRepo = connection.getRepository(User);
-            await userRepo.save({...userData, role : Roles.CUSTOMER});
+            await userRepo.save({ ...userData, role: Roles.CUSTOMER });
 
             //---- act
-            const response = await request(app).post("/auth/register").send(userData);
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
             const users = await userRepo.find();
             //---- assert
 
             expect(response.statusCode).toBe(400);
             expect(users).toHaveLength(1);
-
-
         });
     });
 
