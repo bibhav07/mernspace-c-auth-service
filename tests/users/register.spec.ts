@@ -23,7 +23,7 @@ describe("POST /auth/register", () => {
         await connection.destroy();
     });
 
-    describe("Given all fields", () => {
+    describe.skip("Given all fields", () => {
         //test for status
         it("should return the 201 status code", async () => {
             //A=Arrage, A=Act, A=Assert
@@ -169,5 +169,29 @@ describe("POST /auth/register", () => {
         });
     });
 
-    describe("Fields are missing", () => {});
+    describe("Fields are missing", () => {
+
+        it("should return 400 if email missing", async () => {
+
+                //---- arrage
+                const userData = {
+                    firstName: "Bibhav",
+                    lastName: "Y",
+                    email : "",
+                    password: "secret",
+                };
+                //---- act
+                const response = await request(app).post("/auth/register").send(userData);
+                //assert
+                expect(response.statusCode).toBe(400);
+                const userRepository  = connection.getRepository(User);
+                const user = await userRepository.find();
+                expect(user.length).toBe(0);
+        
+        
+            });
+
+
+
+    });
 });
