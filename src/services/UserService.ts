@@ -9,7 +9,6 @@ export class UserService {
     constructor(private userRepository: Repository<User>) {}
     async create({ firstName, lastName, email, password }: userData) {
         try {
-
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(password, saltRounds);
 

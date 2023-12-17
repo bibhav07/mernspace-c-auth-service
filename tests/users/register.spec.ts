@@ -144,7 +144,6 @@ describe("POST /auth/register", () => {
             expect(users[0].password).toHaveLength(60);
             //cheking the password pattern
             expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
-        
         });
     });
 
