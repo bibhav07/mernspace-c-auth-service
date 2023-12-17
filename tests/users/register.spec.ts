@@ -145,6 +145,28 @@ describe("POST /auth/register", () => {
             //cheking the password pattern
             expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
         });
+
+        it("should return 400 if email already esists", async () => {
+            //---- arrage
+            const userData = {
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "by@gmail.com",
+                password: "secret",
+            };
+            const userRepo = connection.getRepository(User);
+            await userRepo.save({...userData, role : Roles.CUSTOMER});
+
+            //---- act
+            const response = await request(app).post("/auth/register").send(userData);
+            const users = await userRepo.find();
+            //---- assert
+
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(1);
+
+
+        });
     });
 
     describe("Fields are missing", () => {});
