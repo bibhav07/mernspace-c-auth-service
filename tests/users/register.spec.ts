@@ -100,7 +100,9 @@ describe("POST /auth/register", () => {
                 password: "secret",
             };
             //---- act
-            const response = await request(app).post("/auth/register").send(userData);
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
             expect(response.status).toBe(201);
             expect(response.body).toHaveProperty("id", expect.any(Number));
         });
