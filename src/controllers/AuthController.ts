@@ -17,14 +17,13 @@ export class AuthController {
         res: Response,
         next: NextFunction,
     ) {
-        
         const result = validationResult(req);
-        if(!result.isEmpty()){
-            return res.status(400).json({errors: result.array()});
+        if (!result.isEmpty()) {
+            return res.status(400).json({ errors: result.array() });
         }
-        
+
         const { firstName, lastName, email, password } = req.body;
-        
+
         this.logger.debug("New incomming data for register", {
             firstName,
             lastName,
