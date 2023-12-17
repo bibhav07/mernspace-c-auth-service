@@ -13,7 +13,7 @@ export class UserService {
                 lastName,
                 email,
                 password,
-                role: Roles.CUSTOMER
+                role: Roles.CUSTOMER,
             });
         } catch (err) {
             const error = createHttpError(500, "unable to store data in DB");

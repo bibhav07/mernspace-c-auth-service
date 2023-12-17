@@ -124,7 +124,6 @@ describe("POST /auth/register", () => {
             const users = await userRepo.find();
 
             expect(users[0]).toHaveProperty("role", Roles.CUSTOMER);
-
         });
     });
 
