@@ -2,8 +2,9 @@ import request from "supertest";
 import app from "../../src/app";
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../src/config/data-source";
-import { truncateTables } from "../utils";
+// import { truncateTables } from "../utils";
 import { User } from "../../src/entity/User";
+import { Roles } from "../../src/constants";
 
 describe("POST /auth/register", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,8 +15,8 @@ describe("POST /auth/register", () => {
     });
 
     beforeEach(async () => {
-        // database truncatse
-        await truncateTables(connection);
+        await connection.dropDatabase();
+        await connection.synchronize();
     });
 
     afterAll(async () => {
@@ -105,6 +106,25 @@ describe("POST /auth/register", () => {
                 .send(userData);
             expect(response.status).toBe(201);
             expect(response.body).toHaveProperty("id", expect.any(Number));
+        });
+
+        it("should have role type as customer only", async () => {
+            //---- arrage
+            const userData = {
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "by@gmail.com",
+                password: "secret",
+            };
+            //---- act
+            await request(app).post("/auth/register").send(userData);
+            //---- assert
+
+            const userRepo = connection.getRepository(User);
+            const users = await userRepo.find();
+
+            expect(users[0]).toHaveProperty("role", Roles.CUSTOMER);
+
         });
     });
 
