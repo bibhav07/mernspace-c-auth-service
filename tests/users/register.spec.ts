@@ -169,7 +169,7 @@ describe("POST /auth/register", () => {
         });
     });
 
-    describe("Fields are missing", () => {
+    describe.skip("Fields are missing", () => {
         it("should return 400 if email missing", async () => {
             //---- arrage
             const userData = {
@@ -188,5 +188,124 @@ describe("POST /auth/register", () => {
             const user = await userRepository.find();
             expect(user.length).toBe(0);
         });
+        it("should return 400 if password missing", async () => {
+            //---- arrage
+            const userData = {
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "aka@gmail.com",
+                password: "",
+            };
+            //---- act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            //assert
+            expect(response.statusCode).toBe(400);
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.find();
+            expect(user.length).toBe(0);
+        });
+        it("should return 400 if firstName missing", async () => {
+            //---- arrage
+            const userData = {
+                firstName: "",
+                lastName: "Y",
+                email: "aka@gmail.com",
+                password: "secret",
+            };
+            //---- act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            //assert
+            expect(response.statusCode).toBe(400);
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.find();
+            expect(user.length).toBe(0);
+        });
+        it("should return 400 if lastName missing", async () => {
+            //---- arrage
+            const userData = {
+                firstName: "Bibhav",
+                lastName: "",
+                email: "aka@gmail.com",
+                password: "secret",
+            };
+            //---- act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            //assert
+            expect(response.statusCode).toBe(400);
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.find();
+            expect(user.length).toBe(0);
+        });
     });
+
+    describe.skip("fields are not in proper format", () => {
+        it("should check if email is valid", async ()=>{
+            //---- arrage
+            const userData = {
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "email",
+                password: "secret",
+            };
+        
+            //---- act
+            const response = await request(app)
+            .post("/auth/register")
+            .send(userData);
+
+            //assert
+            const userRepository = connection.getRepository(User);
+            const users  = await userRepository.find();
+
+            expect(response.statusCode).toBe(400);
+            expect(users.length).toBe(0);
+
+
+        });
+
+
+
+
+        it("should check if password is less than 8 char", async ()=>{
+            //---- arrage
+            const userData = {
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "email@gmail.com",
+                password: "secretsecret",
+            };
+        
+            //---- act
+            const response = await request(app)
+            .post("/auth/register")
+            .send(userData);
+
+            //assert
+            const userRepository = connection.getRepository(User);
+            const users  = await userRepository.find();
+
+            expect(response.statusCode).toBe(400);
+            expect(users.length).toBe(0);
+
+
+        });
+
+
+
+
+    });
+
+    describe('check email format', () => { 
+
+        it("check if error formaat is write",()=>{
+
+        });
+    });
+
 });
