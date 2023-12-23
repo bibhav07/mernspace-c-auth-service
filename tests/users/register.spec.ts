@@ -245,7 +245,7 @@ describe("POST /auth/register", () => {
     });
 
     describe.skip("fields are not in proper format", () => {
-        it("should check if email is valid", async ()=>{
+        it("should check if email is valid", async () => {
             //---- arrage
             const userData = {
                 firstName: "Bibhav",
@@ -253,26 +253,21 @@ describe("POST /auth/register", () => {
                 email: "email",
                 password: "secret",
             };
-        
+
             //---- act
             const response = await request(app)
-            .post("/auth/register")
-            .send(userData);
+                .post("/auth/register")
+                .send(userData);
 
             //assert
             const userRepository = connection.getRepository(User);
-            const users  = await userRepository.find();
+            const users = await userRepository.find();
 
             expect(response.statusCode).toBe(400);
             expect(users.length).toBe(0);
-
-
         });
 
-
-
-
-        it("should check if password is less than 8 char", async ()=>{
+        it("should check if password is less than 8 char", async () => {
             //---- arrage
             const userData = {
                 firstName: "Bibhav",
@@ -280,32 +275,22 @@ describe("POST /auth/register", () => {
                 email: "email@gmail.com",
                 password: "secretsecret",
             };
-        
+
             //---- act
             const response = await request(app)
-            .post("/auth/register")
-            .send(userData);
+                .post("/auth/register")
+                .send(userData);
 
             //assert
             const userRepository = connection.getRepository(User);
-            const users  = await userRepository.find();
+            const users = await userRepository.find();
 
             expect(response.statusCode).toBe(400);
             expect(users.length).toBe(0);
-
-
-        });
-
-
-
-
-    });
-
-    describe('check email format', () => { 
-
-        it("check if error formaat is write",()=>{
-
         });
     });
 
+    describe("check email format", () => {
+        it("check if error formaat is write", () => {});
+    });
 });
