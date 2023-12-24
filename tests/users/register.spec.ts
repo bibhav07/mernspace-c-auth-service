@@ -170,45 +170,45 @@ describe("POST /auth/register", () => {
         });
 
         it("should return a access token and refresh token inside a cookie", async () => {
-                        //---- arrage
+            //---- arrage
             const userData = {
-                    firstName: "Bibhav",
-                    lastName: "Y",
-                    email: "by@gmail.com",
-                    password: "secret",
-                };
-            
-                        //---- act
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "by@gmail.com",
+                password: "secret",
+            };
+
+            //---- act
             const response = await request(app)
-                    .post("/auth/register")
-                    .send(userData);
+                .post("/auth/register")
+                .send(userData);
 
             //assert
             interface Headers {
-                ['set-cookie']: string[]
-            };
+                ["set-cookie"]: string[];
+            }
 
-            let accessToken = null;    
-            let refreshToken = null;    
-            
-            const cookies = (response.headers as unknown as Headers)['set-cookie'] || [];
+            let accessToken = null;
+            let refreshToken = null;
 
-            cookies.forEach(  (cookie) => {
-                if(cookie.startsWith('accessToken=')){
-                        accessToken = cookie.split(';')[0].split('=')[1]; 
+            const cookies =
+                (response.headers as unknown as Headers)["set-cookie"] || [];
+
+            cookies.forEach((cookie) => {
+                if (cookie.startsWith("accessToken=")) {
+                    accessToken = cookie.split(";")[0].split("=")[1];
                 }
-                if(cookie.startsWith('refreshToken=')){
-                        refreshToken = cookie.split(';')[0].split('=')[1]; 
+                if (cookie.startsWith("refreshToken=")) {
+                    refreshToken = cookie.split(";")[0].split("=")[1];
                 }
-            } ) 
-            
+            });
+
             expect(accessToken).not.toBeNull();
             expect(refreshToken).not.toBeNull();
 
             expect(isJwt(accessToken)).toBeTruthy();
             // expect(isJwt(refreshToken)).toBeTruthy();
-                    
-        })
+        });
     });
 
     describe.skip("Fields are missing", () => {
