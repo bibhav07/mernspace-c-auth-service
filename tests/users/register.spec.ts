@@ -5,6 +5,7 @@ import { AppDataSource } from "../../src/config/data-source";
 // import { truncateTables } from "../utils";
 import { User } from "../../src/entity/User";
 import { Roles } from "../../src/constants";
+import { isJwt } from "../utils/";
 
 describe("POST /auth/register", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,9 +24,9 @@ describe("POST /auth/register", () => {
         await connection.destroy();
     });
 
-    describe.skip("Given all fields", () => {
+    describe("Given all fields", () => {
         //test for status
-        it("should return the 201 status code", async () => {
+        it.skip("should return the 201 status code", async () => {
             //A=Arrage, A=Act, A=Assert
 
             //---- arrage
@@ -46,7 +47,7 @@ describe("POST /auth/register", () => {
         });
 
         //test for valid json resopnse
-        it("should return valid json response", async () => {
+        it.skip("should return valid json response", async () => {
             //A=Arrage, A=Act, A=Assert
 
             //---- arrage
@@ -68,7 +69,7 @@ describe("POST /auth/register", () => {
             ).toEqual(expect.stringContaining("json"));
         });
 
-        it("should persist the user in the database", async () => {
+        it.skip("should persist the user in the database", async () => {
             //A=Arrage, A=Act, A=Assert
             //---- arrage
             const userData = {
@@ -90,7 +91,7 @@ describe("POST /auth/register", () => {
             expect(users[0].email).toBe(userData.email);
         });
 
-        it("should return the saved user id and type number", async () => {
+        it.skip("should return the saved user id and type number", async () => {
             //A=Arrage, A=Act, A=Assert
             //---- arrage
             const userData = {
@@ -107,7 +108,7 @@ describe("POST /auth/register", () => {
             expect(response.body).toHaveProperty("id", expect.any(Number));
         });
 
-        it("should have role type as customer only", async () => {
+        it.skip("should have role type as customer only", async () => {
             //---- arrage
             const userData = {
                 firstName: "Bibhav",
@@ -125,7 +126,7 @@ describe("POST /auth/register", () => {
             expect(users[0]).toHaveProperty("role", Roles.CUSTOMER);
         });
 
-        it("should store hashed password", async () => {
+        it.skip("should store hashed password", async () => {
             //---- arrage
             const userData = {
                 firstName: "Bibhav",
@@ -146,7 +147,7 @@ describe("POST /auth/register", () => {
             expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
         });
 
-        it("should return 400 if email already esists", async () => {
+        it.skip("should return 400 if email already esists", async () => {
             //---- arrage
             const userData = {
                 firstName: "Bibhav",
@@ -167,6 +168,47 @@ describe("POST /auth/register", () => {
             expect(response.statusCode).toBe(400);
             expect(users).toHaveLength(1);
         });
+
+        it("should return a access token and refresh token inside a cookie", async () => {
+                        //---- arrage
+            const userData = {
+                    firstName: "Bibhav",
+                    lastName: "Y",
+                    email: "by@gmail.com",
+                    password: "secret",
+                };
+            
+                        //---- act
+            const response = await request(app)
+                    .post("/auth/register")
+                    .send(userData);
+
+            //assert
+            interface Headers {
+                ['set-cookie']: string[]
+            };
+
+            let accessToken = null;    
+            let refreshToken = null;    
+            
+            const cookies = (response.headers as unknown as Headers)['set-cookie'] || [];
+
+            cookies.forEach(  (cookie) => {
+                if(cookie.startsWith('accessToken=')){
+                        accessToken = cookie.split(';')[0].split('=')[1]; 
+                }
+                if(cookie.startsWith('refreshToken=')){
+                        refreshToken = cookie.split(';')[0].split('=')[1]; 
+                }
+            } ) 
+            
+            expect(accessToken).not.toBeNull();
+            expect(refreshToken).not.toBeNull();
+
+            expect(isJwt(accessToken)).toBeTruthy();
+            // expect(isJwt(refreshToken)).toBeTruthy();
+                    
+        })
     });
 
     describe.skip("Fields are missing", () => {
@@ -290,7 +332,7 @@ describe("POST /auth/register", () => {
         });
     });
 
-    describe("check email format", () => {
+    describe.skip("check email format", () => {
         it("check if error formaat is write", () => {});
     });
 });
