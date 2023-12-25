@@ -1,18 +1,16 @@
-import fs from "fs";
-import path from "path";
-import { NextFunction, Response } from "express";
-import { RegisterUserRequest } from "../types";
-import { UserService } from "../services/UserService";
 import { Logger } from "winston";
+import { JwtPayload } from "jsonwebtoken";
+import { RegisterUserRequest } from "../types";
+import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
-import { JwtPayload, sign } from "jsonwebtoken";
-import createHttpError from "http-errors";
-import { Config } from "../config";
+import { UserService } from "../services/UserService";
+import { TokenService } from "../services/TokenService";
 
 export class AuthController {
     constructor(
         private userService: UserService,
         private logger: Logger,
+        private tokenService: TokenService
     ) {
         this.userService = userService;
     }
@@ -42,41 +40,20 @@ export class AuthController {
                 email,
                 password,
             });
+
             this.logger.info(`New user registered -> id ${user.id}`);
-
-            let privateKey: Buffer;
-
-            try {
-                privateKey = fs.readFileSync(
-                    path.join(__dirname, "../../certs/private.pem"),
-                );
-            } catch (err) {
-                const error = createHttpError(
-                    500,
-                    "Error while reading private key",
-                );
-                return next(error);
-            }
-            //attach cookies
 
             const payload: JwtPayload = {
                 sub: String(user.id),
                 role: user.role,
             };
 
-            //generating token
-            const accessToken = sign(payload, privateKey, {
-                algorithm: "RS256",
-                expiresIn: "1h",
-                issuer: "auth-service",
-            });
+            const accessToken = this.tokenService.generateAccessToken(payload);
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
-                algorithm: "HS256",
-                expiresIn: "1y",
-                issuer: "auth-service",
-            });
+            //saving the refresh token
+            const newRefreshToken  = await this.tokenService.presistRefreshToken(user);
+
+            const refreshToken = this.tokenService.generateRefreshToken({...payload, id : String(newRefreshToken.id)})
 
             //setting cookie
             res.cookie("accessToken", accessToken, {
@@ -85,6 +62,7 @@ export class AuthController {
                 maxAge: 1000 * 60 * 60, //1h
                 httpOnly: true,
             });
+
 
             res.cookie("refreshToken", refreshToken, {
                 domain: "localhost",
