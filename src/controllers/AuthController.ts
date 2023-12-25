@@ -10,7 +10,7 @@ export class AuthController {
     constructor(
         private userService: UserService,
         private logger: Logger,
-        private tokenService: TokenService
+        private tokenService: TokenService,
     ) {
         this.userService = userService;
     }
@@ -51,9 +51,13 @@ export class AuthController {
             const accessToken = this.tokenService.generateAccessToken(payload);
 
             //saving the refresh token
-            const newRefreshToken  = await this.tokenService.presistRefreshToken(user);
+            const newRefreshToken =
+                await this.tokenService.presistRefreshToken(user);
 
-            const refreshToken = this.tokenService.generateRefreshToken({...payload, id : String(newRefreshToken.id)})
+            const refreshToken = this.tokenService.generateRefreshToken({
+                ...payload,
+                id: String(newRefreshToken.id),
+            });
 
             //setting cookie
             res.cookie("accessToken", accessToken, {
@@ -62,7 +66,6 @@ export class AuthController {
                 maxAge: 1000 * 60 * 60, //1h
                 httpOnly: true,
             });
-
 
             res.cookie("refreshToken", refreshToken, {
                 domain: "localhost",

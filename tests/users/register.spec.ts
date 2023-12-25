@@ -211,31 +211,31 @@ describe("POST /auth/register", () => {
             expect(isJwt(refreshToken)).toBeTruthy();
         });
 
-        it("store refresh token in the database", async() => {
-                      //---- arrage
+        it("store refresh token in the database", async () => {
+            //---- arrage
             const userData = {
-            firstName: "Bibhav",
-            lastName: "Y",
-            email: "by@gmail.com",
-            password: "secret",
-        };
+                firstName: "Bibhav",
+                lastName: "Y",
+                email: "by@gmail.com",
+                password: "secret",
+            };
 
-        //---- act
-        const response = await request(app)
-            .post("/auth/register")
-            .send(userData);
-            
-                    
-        const refreshTokenRepo = connection.getRepository(RefreshToken);
-        
-        const tokens = await refreshTokenRepo.createQueryBuilder("refToken").where("refToken.userId = :userId", {
-            userId: (response.body as Record<string, string>).id
-        }).getMany();
+            //---- act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
 
-        expect(tokens).toHaveLength(1);
+            const refreshTokenRepo = connection.getRepository(RefreshToken);
 
+            const tokens = await refreshTokenRepo
+                .createQueryBuilder("refToken")
+                .where("refToken.userId = :userId", {
+                    userId: (response.body as Record<string, string>).id,
+                })
+                .getMany();
+
+            expect(tokens).toHaveLength(1);
         });
-   
     });
 
     describe.skip("Fields are missing", () => {

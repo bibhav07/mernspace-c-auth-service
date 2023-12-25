@@ -8,11 +8,9 @@ import { Repository } from "typeorm";
 import { RefreshToken } from "../entity/RefreshToken";
 
 export class TokenService {
+    constructor(private refreshTokenRepository: Repository<RefreshToken>) {}
 
-    constructor(private refreshTokenRepository: Repository<RefreshToken>){};
-
-    generateAccessToken(payload: JwtPayload){
-
+    generateAccessToken(payload: JwtPayload) {
         let privateKey: Buffer;
 
         try {
@@ -27,38 +25,34 @@ export class TokenService {
             throw error;
         }
 
-
         //generating token
-    const accessToken = sign(payload, privateKey, {
-        algorithm: "RS256",
-        expiresIn: "1h",
-        issuer: "auth-service",
-    });
+        const accessToken = sign(payload, privateKey, {
+            algorithm: "RS256",
+            expiresIn: "1h",
+            issuer: "auth-service",
+        });
 
-    return accessToken;
-    };
+        return accessToken;
+    }
 
-    generateRefreshToken(payload: JwtPayload){
+    generateRefreshToken(payload: JwtPayload) {
         const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
             algorithm: "HS256",
             expiresIn: "1y",
             issuer: "auth-service",
-            jwtid: String(payload.id)
+            jwtid: String(payload.id),
         });
         return refreshToken;
-    };
-
-    async presistRefreshToken(user:User){
-           //save reresh token to db
-           const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365 //1y
-           //saving the refresh token
-           const newRefreshToken = await this.refreshTokenRepository.save({
-               user,
-               expiresAt: new Date(Date.now() + MS_IN_YEAR)
-           })
-           return newRefreshToken;
-
     }
 
-
+    async presistRefreshToken(user: User) {
+        //save reresh token to db
+        const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365; //1y
+        //saving the refresh token
+        const newRefreshToken = await this.refreshTokenRepository.save({
+            user,
+            expiresAt: new Date(Date.now() + MS_IN_YEAR),
+        });
+        return newRefreshToken;
+    }
 }
