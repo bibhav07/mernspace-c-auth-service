@@ -75,8 +75,8 @@ export class AuthController {
             const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
                 algorithm: "HS256",
                 expiresIn: "1y",
-                issuer: "auth-service"
-            })
+                issuer: "auth-service",
+            });
 
             //setting cookie
             res.cookie("accessToken", accessToken, {
@@ -85,7 +85,6 @@ export class AuthController {
                 maxAge: 1000 * 60 * 60, //1h
                 httpOnly: true,
             });
-
 
             res.cookie("refreshToken", refreshToken, {
                 domain: "localhost",
