@@ -2,14 +2,14 @@ import { checkSchema } from "express-validator";
 
 export default checkSchema({
     email: {
-        errorMessage: "Email is required",
+        errorMessage: "email is required",
         notEmpty: true,
         trim: true,
         isEmail: true,
         normalizeEmail: true,
     },
     password: {
-        errorMessage: "Email is password",
+        errorMessage: "password is required",
         notEmpty: true,
         trim: true,
         isLength: {
@@ -19,15 +19,14 @@ export default checkSchema({
         },
     },
     firstName: {
-        errorMessage: "Email is firstName",
+        errorMessage: "firstname is required",
         notEmpty: true,
         trim: true,
     },
     lastName: {
-        errorMessage: "Email is lastName",
+        errorMessage: "lastName is required",
         notEmpty: true,
         trim: true,
     },
 });
 
-// export default [body("email").notEmpty().withMessage("Email is required")];

@@ -2,17 +2,16 @@ import "reflect-metadata";
 import express, { NextFunction, Request, Response } from "express";
 import logger from "./config/logges";
 import { HttpError } from "http-errors";
-import createHttp from "http-errors";
 import authRouter from "./routes/auth";
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/", async (req, res, next) => {
-    const err = createHttp(401, "error");
-    return next(err);
-    // res.send("welcome to auth service....");
+app.get("/", async (req, res) => {
+    // const err = createHttp(401, "error");
+    // return next(err);
+    res.send("welcome to auth service....");
 });
 
 app.use("/auth", authRouter);
