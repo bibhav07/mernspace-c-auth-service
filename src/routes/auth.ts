@@ -19,10 +19,15 @@ const userService = new UserService(userRepository);
 const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
 const tokenService = new TokenService(refreshTokenRepository);
 
-const credetialService  = new CredetialService();
+const credetialService = new CredetialService();
 
 //passing dependency instances in auth-conroller
-const authcontroller = new AuthController(userService, logger, tokenService, credetialService);
+const authcontroller = new AuthController(
+    userService,
+    logger,
+    tokenService,
+    credetialService,
+);
 
 router.post(
     "/register",

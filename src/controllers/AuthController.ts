@@ -13,7 +13,7 @@ export class AuthController {
         private userService: UserService,
         private logger: Logger,
         private tokenService: TokenService,
-        private credetialService: CredetialService
+        private credetialService: CredetialService,
     ) {
         this.userService = userService;
     }
@@ -83,11 +83,7 @@ export class AuthController {
             return;
         }
     }
-    async login(
-        req: RegisterUserRequest,
-        res: Response,
-        next: NextFunction,
-    ) {
+    async login(req: RegisterUserRequest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
             return res.status(400).json({ errors: result.array() });
@@ -101,24 +97,29 @@ export class AuthController {
         });
 
         try {
-
             //find the user by email
             const user = await this.userService.findbyEmail(email);
 
-            if(!user){
-                const error = createHttpError(400, "Email or password did not match");
+            if (!user) {
+                const error = createHttpError(
+                    400,
+                    "Email or password did not match",
+                );
                 return next(error);
             }
-            
+
             //match password of found user by email;
-            const matchPassword = await this.credetialService.comparePassword(password, user.password);
-            if(!matchPassword){
-                const error = createHttpError(400, "Email or password did not match");
+            const matchPassword = await this.credetialService.comparePassword(
+                password,
+                user.password,
+            );
+            if (!matchPassword) {
+                const error = createHttpError(
+                    400,
+                    "Email or password did not match",
+                );
                 return next(error);
             }
-
-
-
 
             const payload: JwtPayload = {
                 sub: String(user.id),
@@ -151,7 +152,7 @@ export class AuthController {
                 httpOnly: true,
             });
 
-            this.logger.info("user logged in", {id : user.id} );
+            this.logger.info("user logged in", { id: user.id });
             res.status(200).json({ id: user.id });
         } catch (error) {
             next(error);

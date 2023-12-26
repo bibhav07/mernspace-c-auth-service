@@ -6,14 +6,13 @@ export default checkSchema({
         notEmpty: true,
         trim: true,
         isEmail: {
-            errorMessage : "should be a valid email"
+            errorMessage: "should be a valid email",
         },
         normalizeEmail: true,
     },
     password: {
         errorMessage: "password is required",
         notEmpty: true,
-        trim: true
-    }
-
+        trim: true,
+    },
 });
