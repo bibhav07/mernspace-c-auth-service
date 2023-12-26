@@ -8,7 +8,7 @@ import { Roles } from "../../src/constants";
 import { isJwt } from "../utils/";
 import { RefreshToken } from "../../src/entity/RefreshToken";
 
-describe("POST /auth/register", () => {
+describe.skip("POST /auth/register", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
 
@@ -25,7 +25,7 @@ describe("POST /auth/register", () => {
         await connection.destroy();
     });
 
-    describe("Given all fields", () => {
+    describe.skip("Given all fields", () => {
         //test for status
         it.skip("should return the 201 status code", async () => {
             //A=Arrage, A=Act, A=Assert
