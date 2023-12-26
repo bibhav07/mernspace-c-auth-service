@@ -25,7 +25,7 @@ describe.skip("POST /auth/register", () => {
         await connection.destroy();
     });
 
-    describe.skip("Given all fields", () => {
+    describe("Given all fields", () => {
         //test for status
         it.skip("should return the 201 status code", async () => {
             //A=Arrage, A=Act, A=Assert
