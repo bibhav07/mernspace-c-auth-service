@@ -19,7 +19,7 @@ describe("POST auth/login", () => {
         await connection.destroy();
     });
 
-    describe.skip("Given all fields", () => {
+    describe("Given all fields", () => {
         it("should retun 200 after loign and attach cookie", async () => {
             //---- arrage
             const userData = {

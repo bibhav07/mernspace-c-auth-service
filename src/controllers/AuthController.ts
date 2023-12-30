@@ -1,6 +1,6 @@
 import { Logger } from "winston";
 import { JwtPayload } from "jsonwebtoken";
-import { RegisterUserRequest } from "../types";
+import { AuthRequest, LoginUserRequest, RegisterUserRequest } from "../types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { UserService } from "../services/UserService";
@@ -83,7 +83,7 @@ export class AuthController {
             return;
         }
     }
-    async login(req: RegisterUserRequest, res: Response, next: NextFunction) {
+    async login(req: LoginUserRequest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
             return res.status(400).json({ errors: result.array() });
@@ -158,5 +158,10 @@ export class AuthController {
             next(error);
             return;
         }
+    }
+
+    async self(req: AuthRequest, res: Response){
+        const user = await this.userService.findById(Number(req.auth.sub))     
+        return res.status(200).json(user)
     }
 }
