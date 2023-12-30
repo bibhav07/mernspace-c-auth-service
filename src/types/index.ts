@@ -19,10 +19,9 @@ export interface LoginUserRequest extends Request {
     body: userLoginData;
 }
 
-
 export interface AuthRequest extends Request {
     auth: {
         sub: string;
-        role: string
-    }
+        role: string;
+    };
 }

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import express, { NextFunction, Request, Response } from "express";
-import cookieParser  from "cookie-parser";
+import cookieParser from "cookie-parser";
 import logger from "./config/logges";
 import { HttpError } from "http-errors";
 import authRouter from "./routes/auth";

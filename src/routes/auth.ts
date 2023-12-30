@@ -45,12 +45,8 @@ router.post(
         authcontroller.login(req, res, next),
 );
 
-
-router.get(
-    "/self",
-    authenticate,
-    (req: Request, res: Response) =>
-        authcontroller.self(req as AuthRequest, res),
+router.get("/self", authenticate, (req: Request, res: Response) =>
+    authcontroller.self(req as AuthRequest, res),
 );
 
 export default router;

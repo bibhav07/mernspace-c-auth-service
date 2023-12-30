@@ -9,7 +9,7 @@ import createJWKSMock from "mock-jwks";
 describe("GET /auth/self", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
-    let jwks: ReturnType<typeof createJWKSMock>
+    let jwks: ReturnType<typeof createJWKSMock>;
 
     beforeAll(async () => {
         jwks = createJWKSMock("http://localhost:5501");
@@ -21,21 +21,22 @@ describe("GET /auth/self", () => {
         await connection.dropDatabase();
         await connection.synchronize();
     });
-    
+
     afterAll(async () => {
         jwks.start();
         await connection.destroy();
     });
 
     describe("Given all fields", () => {
-
         it("should return the 200 status code", async () => {
-                        //generate token
-            const accessToken = jwks.token({sub : '1', role: Roles.CUSTOMER})
-            const response = await request(app).get("/auth/self").set('Cookie', [`accessToken=${accessToken}`]).send();
-            expect(response.statusCode).toBe(200);            
-
-        })
+            //generate token
+            const accessToken = jwks.token({ sub: "1", role: Roles.CUSTOMER });
+            const response = await request(app)
+                .get("/auth/self")
+                .set("Cookie", [`accessToken=${accessToken}`])
+                .send();
+            expect(response.statusCode).toBe(200);
+        });
         it("should return user data", async () => {
             //register user
             const userData = {
@@ -45,25 +46,26 @@ describe("GET /auth/self", () => {
                 password: "secret",
             };
             const userRepository = connection.getRepository(User);
-            const data = await userRepository.save({...userData, role: Roles.CUSTOMER});
-           
+            const data = await userRepository.save({
+                ...userData,
+                role: Roles.CUSTOMER,
+            });
+
             //generate token
-            const accessToken = jwks.token({sub : String(data.id), role: data.role})
+            const accessToken = jwks.token({
+                sub: String(data.id),
+                role: data.role,
+            });
 
             //add token to cookie
 
             const response = await request(app)
-                                    .get("/auth/self")
-                                    .set('Cookie', [`accessToken=${accessToken}`])
-                                    .send();
-
+                .get("/auth/self")
+                .set("Cookie", [`accessToken=${accessToken}`])
+                .send();
 
             //assert
-            expect( (response.body as Record<string, string>).id).toBe(data.id);            
-
-        })
-
-    })
-
-
+            expect((response.body as Record<string, string>).id).toBe(data.id);
+        });
+    });
 });
