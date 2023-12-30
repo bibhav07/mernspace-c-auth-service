@@ -54,12 +54,12 @@ export class AuthController {
             const accessToken = this.tokenService.generateAccessToken(payload);
 
             //saving the refresh token
-            const newRefreshToken =
+            const newRefreshTokenUserId =
                 await this.tokenService.presistRefreshToken(user);
 
             const refreshToken = this.tokenService.generateRefreshToken({
                 ...payload,
-                id: String(newRefreshToken.id),
+                id: String(newRefreshTokenUserId.id),
             });
 
             //setting cookie
@@ -129,12 +129,12 @@ export class AuthController {
             const accessToken = this.tokenService.generateAccessToken(payload);
 
             //saving the refresh token
-            const newRefreshToken =
+            const newRefreshTokenUserId =
                 await this.tokenService.presistRefreshToken(user);
 
             const refreshToken = this.tokenService.generateRefreshToken({
                 ...payload,
-                id: String(newRefreshToken.id),
+                id: String(newRefreshTokenUserId.id),
             });
 
             //setting cookie
