@@ -75,32 +75,32 @@ describe("POST auth/login", () => {
 
     describe("Missing fields", () => {
         it("should return 400 is no email", async () => {
-                        //---- arrage
-                        const userData = {
-                            email: "",
-                            password: "secret",
-                        };
-            
-                        //---- act
-                        const response = await request(app)
-                            .post("/auth/login")
-                            .send(userData);
+            //---- arrage
+            const userData = {
+                email: "",
+                password: "secret",
+            };
 
-                        expect(response.statusCode).toBe(400);
-        })
+            //---- act
+            const response = await request(app)
+                .post("/auth/login")
+                .send(userData);
+
+            expect(response.statusCode).toBe(400);
+        });
         it("should return 400 is no password", async () => {
-                                    //---- arrage
-                                    const userData = {
-                                        email: "by@gmail.com",
-                                        password: "",
-                                    };
-                        
-                                    //---- act
-                                    const response = await request(app)
-                                        .post("/auth/login")
-                                        .send(userData);
-            
-                                    expect(response.statusCode).toBe(400);
-        } )
-    })
+            //---- arrage
+            const userData = {
+                email: "by@gmail.com",
+                password: "",
+            };
+
+            //---- act
+            const response = await request(app)
+                .post("/auth/login")
+                .send(userData);
+
+            expect(response.statusCode).toBe(400);
+        });
+    });
 });
