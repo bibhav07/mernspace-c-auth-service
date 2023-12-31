@@ -31,7 +31,7 @@ export class TokenService {
             expiresIn: "1h",
             issuer: "auth-service",
         });
-        
+
         return accessToken;
     }
 

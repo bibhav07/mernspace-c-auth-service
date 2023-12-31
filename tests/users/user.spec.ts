@@ -95,7 +95,9 @@ describe("GET /auth/self", () => {
                 .send();
 
             //assert
-            expect((response.body as Record<string, string>)).not.toHaveProperty('password');
+            expect(response.body as Record<string, string>).not.toHaveProperty(
+                "password",
+            );
         });
         it("should return 401 is token not provided", async () => {
             //register user
@@ -111,11 +113,7 @@ describe("GET /auth/self", () => {
                 role: Roles.CUSTOMER,
             });
 
-
-
-            const response = await request(app)
-                .get("/auth/self")
-                .send();
+            const response = await request(app).get("/auth/self").send();
 
             //assert
             expect(response.statusCode).toBe(401);

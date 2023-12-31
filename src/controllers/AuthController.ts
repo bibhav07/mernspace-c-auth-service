@@ -128,7 +128,7 @@ export class AuthController {
 
             const accessToken = this.tokenService.generateAccessToken(payload);
 
-            //saving the refresh token - generated for user 
+            //saving the refresh token - generated for user
             const newRefreshTokenUserId =
                 await this.tokenService.presistRefreshToken(user);
 
@@ -163,6 +163,6 @@ export class AuthController {
     async self(req: AuthRequest, res: Response) {
         // const user = await this.userService.findById(Number(req.auth.sub));
         const user = await this.userService.findById(Number(req.auth.sub));
-        return res.status(200).json({...user, password:undefined});
+        return res.status(200).json({ ...user, password: undefined });
     }
 }
