@@ -4,7 +4,7 @@ import { Config } from "../config";
 import { Request } from "express";
 
 export default expressjwt({
-    //getting the public key
+    //getting the public key uri
     secret: JwksClient.expressJwtSecret({
         jwksUri: Config.JWKS_URI!,
         cache: true,

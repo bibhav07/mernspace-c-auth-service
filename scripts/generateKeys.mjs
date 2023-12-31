@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
 import crypto from "crypto";
 import fs from "fs";
 
-const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
     modulusLength: 2048,
     publicKeyEncoding: {
         type: "pkcs1",
@@ -14,8 +13,8 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
     },
 });
 
-console.log("publicKey -> ", publicKey);
-console.log("privateKey -> ", privateKey);
+console.log("Public Key", publicKey);
+console.log("Private key", privateKey);
 
-fs.writeFileSync("certs/private.pem", privateKey);
-fs.writeFileSync("certs/public.pem", publicKey);
+fs.writeFileSync("../certs/private.pem", privateKey);
+fs.writeFileSync("../certs/public.pem", publicKey);

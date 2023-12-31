@@ -72,6 +72,8 @@ web_modules/
 
 certs/
 
+public/
+
 # Yarn Integrity file
 .yarn-integrity
 
