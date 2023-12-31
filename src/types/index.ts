@@ -32,7 +32,6 @@ export type AuthCookie = {
     refreshToken: string;
 };
 
-
 export interface IRefreshTokenPayload {
     id: string;
 }

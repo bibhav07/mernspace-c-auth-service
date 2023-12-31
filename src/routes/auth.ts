@@ -51,17 +51,19 @@ router.get("/self", authenticate, (req: Request, res: Response) =>
     authcontroller.self(req as AuthRequest, res),
 );
 
-
-router.post("/refresh", validateRefreshToken, (req: Request, res: Response, next: NextFunction) =>
-    authcontroller.refresh(req as AuthRequest, res, next),
+router.post(
+    "/refresh",
+    validateRefreshToken,
+    (req: Request, res: Response, next: NextFunction) =>
+        authcontroller.refresh(req as AuthRequest, res, next),
 );
 
-
-router.post("/logout", authenticate, parseRefreshToken,  (req: Request, res: Response, next: NextFunction) => 
-    authcontroller.logout(req as AuthRequest, res, next) 
+router.post(
+    "/logout",
+    authenticate,
+    parseRefreshToken,
+    (req: Request, res: Response, next: NextFunction) =>
+        authcontroller.logout(req as AuthRequest, res, next),
 );
-
-
-
 
 export default router;
