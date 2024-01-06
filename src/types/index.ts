@@ -36,7 +36,6 @@ export interface IRefreshTokenPayload {
     id: string;
 }
 
-
 export interface ITenant {
     name: string;
     address: string;

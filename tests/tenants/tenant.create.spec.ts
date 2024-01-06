@@ -20,25 +20,24 @@ describe("POST /tenants", () => {
         await connection.destroy();
     });
 
-    describe("Given all fields",  () => {
-         
+    describe("Given all fields", () => {
         it("should return 201", async () => {
-            const tenantData  = {
+            const tenantData = {
                 name: "Tenant name",
-                address: "Tenant address"
-            }
-            const response = await request(app).post("/tenants").send(tenantData);
-    
+                address: "Tenant address",
+            };
+            const response = await request(app)
+                .post("/tenants")
+                .send(tenantData);
+
             expect(response.statusCode).toBe(201);
         });
-        
-        
-        
+
         it("should store a tenant in the database", async () => {
-            const tenantData  = {
+            const tenantData = {
                 name: "Tenant name",
-                address: "Tenant address"
-            }
+                address: "Tenant address",
+            };
             await request(app).post("/tenants").send(tenantData);
 
             const tenantRepo = connection.getRepository(Tenants);
@@ -47,9 +46,6 @@ describe("POST /tenants", () => {
             expect(tenants).toHaveLength(1);
             expect(tenants[0].name).toBe(tenantData.name);
             expect(tenants[0].address).toBe(tenantData.address);
-        })
-    
+        });
     });
-
-   
 });
