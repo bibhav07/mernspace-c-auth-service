@@ -1,4 +1,4 @@
-import {checkSchema} from "express-validator";
+import { checkSchema } from "express-validator";
 
 export default checkSchema({
     name: {
@@ -9,6 +9,6 @@ export default checkSchema({
     address: {
         trim: true,
         errorMessage: "Tenant address is required!",
-        notEmpty: true
-    }
-})
+        notEmpty: true,
+    },
+});

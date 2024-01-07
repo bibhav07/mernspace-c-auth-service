@@ -12,14 +12,13 @@ export class TenantController {
     ) {}
 
     async create(req: CreateTenantRequest, res: Response, next: NextFunction) {
-       
         //validation
-       const result = validationResult(req);
+        const result = validationResult(req);
 
-       if(!result.isEmpty()){
-        return res.status(400).json({error: result.array()});
-       }
-       
+        if (!result.isEmpty()) {
+            return res.status(400).json({ error: result.array() });
+        }
+
         const { name, address } = req.body;
         try {
             const tenant = await this.tenantService.create({ name, address });
@@ -29,36 +28,36 @@ export class TenantController {
         } catch (error) {
             next(error);
         }
-    };
+    }
 
-
-
-    async update(req: CreateTenantRequest, res: Response, next: NextFunction){
+    async update(req: CreateTenantRequest, res: Response, next: NextFunction) {
         //validation
         const result = validationResult(req);
 
-        if(!result.isEmpty()){
-            return res.status(400).json({error: result.array()});
-        };
-        
-        const {name, address} = req.body;
+        if (!result.isEmpty()) {
+            return res.status(400).json({ error: result.array() });
+        }
+
+        const { name, address } = req.body;
         const tenantId = req.params.id;
 
         if (isNaN(Number(tenantId))) {
             next(createHttpError(400, "Invalid url param."));
             return;
-        };
+        }
 
         try {
-            await this.tenantService.update(Number(tenantId), {name, address});
+            await this.tenantService.update(Number(tenantId), {
+                name,
+                address,
+            });
 
             this.logger.info("Tenant has been updated", { id: tenantId });
 
-            return res.json({id: Number(tenantId)});
+            return res.json({ id: Number(tenantId) });
         } catch (error) {
             return next(error);
         }
-
     }
 
     async getOne(req: Request, res: Response, next: NextFunction) {
@@ -82,7 +81,7 @@ export class TenantController {
         } catch (err) {
             next(err);
         }
-    };
+    }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
         try {
@@ -114,11 +113,4 @@ export class TenantController {
             next(err);
         }
     }
-
-
-
-
-
-
-
 }
