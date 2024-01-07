@@ -9,7 +9,7 @@ import { Roles } from "../../src/constants";
 describe("POST /tenants", () => {
     let connection: DataSource;
     let jwks: ReturnType<typeof createJWKSMock>;
-    let adminToken:string;
+    let adminToken: string;
 
     beforeAll(async () => {
         jwks = createJWKSMock("http://localhost:5501");
@@ -22,17 +22,17 @@ describe("POST /tenants", () => {
         await connection.synchronize();
         adminToken = jwks.token({
             sub: "1",
-            role: Roles.ADMIN
-        })
+            role: Roles.ADMIN,
+        });
     });
 
     afterAll(async () => {
         await connection.destroy();
     });
-    
+
     afterEach(async () => {
         jwks.stop();
-    })
+    });
 
     describe("Given all fields", () => {
         it("should return 201", async () => {
@@ -70,8 +70,10 @@ describe("POST /tenants", () => {
                 name: "Tenant name",
                 address: "Tenant address",
             };
-            const response = await request(app).post("/tenants").send(tenantData);
-            
+            const response = await request(app)
+                .post("/tenants")
+                .send(tenantData);
+
             const tenantRepo = connection.getRepository(Tenants);
             const tenants = await tenantRepo.find();
 
