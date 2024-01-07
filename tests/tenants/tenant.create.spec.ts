@@ -91,7 +91,7 @@ describe("POST /tenants", () => {
             };
             const response = await request(app)
                 .post("/tenants")
-                .set('Cookie', [`accessToken=${managerToken}`])
+                .set("Cookie", [`accessToken=${managerToken}`])
                 .send(tenantData);
 
             const tenantRepo = connection.getRepository(Tenants);
