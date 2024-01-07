@@ -23,7 +23,7 @@ describe("GET /auth/self", () => {
     });
 
     afterAll(async () => {
-        jwks.start();
+        jwks.stop();
         await connection.destroy();
     });
 
