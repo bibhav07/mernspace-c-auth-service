@@ -4,11 +4,7 @@ module.exports = {
     preset: "ts-jest",
     testEnvironment: "node",
     verbose: true,
-    collectCoverage:true,
+    collectCoverage: true,
     coverageProvider: "v8",
-    collectCoverageFrom:[
-        "src/**/*.ts",
-        "!tests/**",
-        "!**/node_modules/**"
-    ]
+    collectCoverageFrom: ["src/**/*.ts", "!tests/**", "!**/node_modules/**"],
 };
