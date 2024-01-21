@@ -11,7 +11,6 @@ export const canAccess = (roles: string[]) => {
             const error = createHttpError(403, "Permission not allowed");
             return next(error);
         }
-
         next();
     };
 };

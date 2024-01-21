@@ -140,7 +140,7 @@ describe.skip("POST /auth/register", () => {
             //---- assert
 
             const userRepo = connection.getRepository(User);
-            const users = await userRepo.find();
+            const users = await userRepo.find({select : ['password']});
 
             expect(users[0].password).not.toBe(userData.password);
             expect(users[0].password).toHaveLength(60);

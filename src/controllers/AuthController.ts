@@ -7,6 +7,7 @@ import { UserService } from "../services/UserService";
 import { TokenService } from "../services/TokenService";
 import createHttpError from "http-errors";
 import { CredetialService } from "../services/CredentialService";
+import { Roles } from "../constants";
 
 export class AuthController {
     constructor(
@@ -42,6 +43,7 @@ export class AuthController {
                 lastName,
                 email,
                 password,
+                role: Roles.CUSTOMER
             });
 
             this.logger.info(`New user registered -> id ${user.id}`);
@@ -98,7 +100,7 @@ export class AuthController {
 
         try {
             //find the user by email
-            const user = await this.userService.findbyEmail(email);
+            const user = await this.userService.findByEmailWithPassword(email);
 
             if (!user) {
                 const error = createHttpError(
