@@ -53,13 +53,10 @@ export interface LimitedUserData {
     role: string;
 }
 
-export interface createUserRequest extends Request{
-    body: userData
+export interface createUserRequest extends Request {
+    body: userData;
 }
 
 export interface UpdateUserRequest extends Request {
     body: LimitedUserData;
 }
-
-
-

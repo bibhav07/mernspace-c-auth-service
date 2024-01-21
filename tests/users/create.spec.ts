@@ -30,11 +30,11 @@ describe("GET /user", () => {
     });
 
     describe("Given all fields", () => {
-   
         it("should persist the user in the db", async () => {
-
             // Create tenant first
-            const tenant = await createTenant(connection.getRepository(Tenants));
+            const tenant = await createTenant(
+                connection.getRepository(Tenants),
+            );
 
             const adminToken = jwks.token({
                 sub: "1",
@@ -62,49 +62,40 @@ describe("GET /user", () => {
 
             expect(users).toHaveLength(1);
             expect(users[0].email).toBe(userData.email);
-
         });
 
         it("should return 403 if non admin user tries to create user", async () => {
-                        // Create tenant first
-                        const tenant = await createTenant(connection.getRepository(Tenants));
+            // Create tenant first
+            const tenant = await createTenant(
+                connection.getRepository(Tenants),
+            );
 
-                        const adminToken = jwks.token({
-                            sub: "1",
-                            role: Roles.CUSTOMER,
-                        });
-            
-                        // Register user
-                        const userData = {
-                            firstName: "Rakesh",
-                            lastName: "K",
-                            email: "rakesh@mern.space",
-                            password: "password",
-                            tenantId: tenant.id,
-                            role: Roles.MANAGER,
-                        };
-            
-                        // Add token to cookie
-                        const response = await request(app)
-                            .post("/users")
-                            .set("Cookie", [`accessToken=${adminToken}`])
-                            .send(userData);
-            
-                        const userRepository = connection.getRepository(User);
-                        const users = await userRepository.find();
-            
-                        expect(users).toHaveLength(0);
-                        expect(response.statusCode).toBe(403);
-            
-            
+            const adminToken = jwks.token({
+                sub: "1",
+                role: Roles.CUSTOMER,
+            });
+
+            // Register user
+            const userData = {
+                firstName: "Rakesh",
+                lastName: "K",
+                email: "rakesh@mern.space",
+                password: "password",
+                tenantId: tenant.id,
+                role: Roles.MANAGER,
+            };
+
+            // Add token to cookie
+            const response = await request(app)
+                .post("/users")
+                .set("Cookie", [`accessToken=${adminToken}`])
+                .send(userData);
+
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+
+            expect(users).toHaveLength(0);
+            expect(response.statusCode).toBe(403);
         });
     });
 });
-
-
-
-
-
-
-
-

@@ -43,7 +43,7 @@ export class AuthController {
                 lastName,
                 email,
                 password,
-                role: Roles.CUSTOMER
+                role: Roles.CUSTOMER,
             });
 
             this.logger.info(`New user registered -> id ${user.id}`);

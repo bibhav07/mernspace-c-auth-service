@@ -8,7 +8,14 @@ import { AppDataSource } from "../config/data-source";
 
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
-    async create({ firstName, lastName, email, password, role, tenantId }: userData) {
+    async create({
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+        tenantId,
+    }: userData) {
         const isEmailExists = await this.userRepository.findOne({
             where: { email },
         });
@@ -25,7 +32,7 @@ export class UserService {
                 email,
                 password: hashedPassword,
                 role,
-                tenant: tenantId ? {id: tenantId} : undefined
+                tenant: tenantId ? { id: tenantId } : undefined,
             });
         } catch (err) {
             const error = createHttpError(500, "unable to store data in DB");
@@ -41,7 +48,7 @@ export class UserService {
         return await this.userRepository.findOne({
             where: { id },
         });
-    };
+    }
 
     async update(
         userId: number,
@@ -62,9 +69,9 @@ export class UserService {
         }
     }
 
-    async getAll(){
+    async getAll() {
         return await this.userRepository.find();
-    };
+    }
 
     async findByEmailWithPassword(email: string) {
         return await this.userRepository.findOne({
@@ -82,15 +89,15 @@ export class UserService {
         });
     }
 
-    async deleteById(userId: number){
-        const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
+    async deleteById(userId: number) {
+        const refreshTokenRepository =
+            AppDataSource.getRepository(RefreshToken);
         await refreshTokenRepository
-        .createQueryBuilder()
-        .delete()
-        .from(RefreshToken)
-        .where('userId = :userId', { userId })
-        .execute();
+            .createQueryBuilder()
+            .delete()
+            .from(RefreshToken)
+            .where("userId = :userId", { userId })
+            .execute();
         return await this.userRepository.delete(userId);
     }
-
 }
