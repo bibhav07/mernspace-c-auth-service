@@ -1,0 +1,1 @@
+MERN-STACK auth service
