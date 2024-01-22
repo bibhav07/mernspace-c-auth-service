@@ -1,4 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, {
+    NextFunction,
+    Request,
+    RequestHandler,
+    Response,
+} from "express";
 import { AuthController } from "../controllers/AuthController";
 import { UserService } from "../services/UserService";
 import { AppDataSource } from "../config/data-source";
@@ -36,35 +41,48 @@ const authcontroller = new AuthController(
 router.post(
     "/register",
     registerValidator,
-    async (req: Request, res: Response, next: NextFunction) => {
-        await authcontroller.register(req, res, next);
-    },
+    (req: Request, res: Response, next: NextFunction) =>
+        authcontroller.register(req, res, next) as unknown as RequestHandler,
 );
 
 router.post(
     "/login",
     loginValidator,
     (req: Request, res: Response, next: NextFunction) =>
-        authcontroller.login(req, res, next),
+        authcontroller.login(req, res, next) as unknown as RequestHandler,
 );
 
-router.get("/self", authenticate, (req: Request, res: Response) =>
-    authcontroller.self(req as AuthRequest, res),
+router.get(
+    "/self",
+    authenticate as RequestHandler,
+    (req: Request, res: Response) =>
+        authcontroller.self(
+            req as AuthRequest,
+            res,
+        ) as unknown as RequestHandler,
 );
 
 router.post(
     "/refresh",
-    validateRefreshToken,
+    validateRefreshToken as RequestHandler,
     (req: Request, res: Response, next: NextFunction) =>
-        authcontroller.refresh(req as AuthRequest, res, next),
+        authcontroller.refresh(
+            req as AuthRequest,
+            res,
+            next,
+        ) as unknown as RequestHandler,
 );
 
 router.post(
     "/logout",
-    authenticate,
-    parseRefreshToken,
+    authenticate as RequestHandler,
+    parseRefreshToken as RequestHandler,
     (req: Request, res: Response, next: NextFunction) =>
-        authcontroller.logout(req as AuthRequest, res, next),
+        authcontroller.logout(
+            req as AuthRequest,
+            res,
+            next,
+        ) as unknown as RequestHandler,
 );
 
 export default router;
