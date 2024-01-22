@@ -8,7 +8,7 @@ import { Roles } from "../../src/constants";
 import { isJwt } from "../utils/";
 import { RefreshToken } from "../../src/entity/RefreshToken";
 
-describe.skip("POST /auth/register", () => {
+describe("POST /auth/register", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
 
@@ -145,7 +145,7 @@ describe.skip("POST /auth/register", () => {
             expect(users[0].password).not.toBe(userData.password);
             expect(users[0].password).toHaveLength(60);
             //cheking the password pattern
-            expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
+            expect(users[0].password).toMatch(/^\$2[a|b]\$\d+\$/);
         });
 
         it.skip("should return 400 if email already esists", async () => {
