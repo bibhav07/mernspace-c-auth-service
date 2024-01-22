@@ -37,8 +37,8 @@ router.post(
     "/register",
     registerValidator,
     async (req: Request, res: Response, next: NextFunction) => {
-       await authcontroller.register(req, res, next);
-    }
+        await authcontroller.register(req, res, next);
+    },
 );
 
 router.post(
