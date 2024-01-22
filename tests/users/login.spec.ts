@@ -7,7 +7,7 @@ import { isJwt } from "../utils";
 import { User } from "../../src/entity/User";
 import { Roles } from "../../src/constants";
 
-describe.skip("POST /auth/login", () => {
+describe("POST /auth/login", () => {
     let connection: DataSource;
 
     beforeAll(async () => {
@@ -23,7 +23,7 @@ describe.skip("POST /auth/login", () => {
         await connection.destroy();
     });
 
-    describe.skip("Given all fields", () => {
+    describe("Given all fields", () => {
         it("should return the access token and refresh token inside a cookie", async () => {
             // Arrange
             const userData = {

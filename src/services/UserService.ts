@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { User } from "../entity/User";
 import { LimitedUserData, userData } from "../types";
 import createHttpError from "http-errors";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { RefreshToken } from "../entity/RefreshToken";
 import { AppDataSource } from "../config/data-source";
 
