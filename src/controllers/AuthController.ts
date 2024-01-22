@@ -82,7 +82,6 @@ export class AuthController {
             res.status(201).json({ id: user.id });
         } catch (error) {
             next(error);
-            return;
         }
     }
     async login(req: LoginUserRequest, res: Response, next: NextFunction) {
