@@ -23,7 +23,7 @@ describe.skip("POST /auth/login", () => {
         await connection.destroy();
     });
 
-    describe("Given all fields", () => {
+    describe.skip("Given all fields", () => {
         it("should return the access token and refresh token inside a cookie", async () => {
             // Arrange
             const userData = {
@@ -53,7 +53,7 @@ describe.skip("POST /auth/login", () => {
             // Assert
             let accessToken = null;
             let refreshToken = null;
-            const cookies = (response.headers as Headers)["set-cookie"] || [];
+            const cookies = (response.headers as unknown as Headers)["set-cookie"] || [];
             cookies.forEach((cookie) => {
                 if (cookie.startsWith("accessToken=")) {
                     accessToken = cookie.split(";")[0].split("=")[1];
