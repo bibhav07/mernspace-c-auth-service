@@ -37,8 +37,8 @@ describe("POST auth/login", () => {
                 ["set-cookie"]: string[];
             }
 
-            let accessToken = '';
-            let refreshToken = '';
+            let accessToken = "";
+            let refreshToken = "";
 
             const cookies =
                 (response.headers as unknown as Headers)["set-cookie"] || [];
