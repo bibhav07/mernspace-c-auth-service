@@ -5,7 +5,7 @@ import { AppDataSource } from "../../src/config/data-source";
 import { DataSource } from "typeorm";
 import { RefreshToken } from "../../src/entity/RefreshToken";
 
-describe("POST auth/login", () => {
+describe.skip("POST auth/login", () => {
     let connection: DataSource;
 
     beforeAll(async () => {
