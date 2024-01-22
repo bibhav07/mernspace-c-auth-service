@@ -36,8 +36,9 @@ const authcontroller = new AuthController(
 router.post(
     "/register",
     registerValidator,
-    (req: Request, res: Response, next: NextFunction) =>
-        authcontroller.register(req, res, next),
+    async (req: Request, res: Response, next: NextFunction) => {
+       await authcontroller.register(req, res, next);
+    }
 );
 
 router.post(
