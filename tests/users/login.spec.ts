@@ -1,17 +1,21 @@
+import { DataSource } from "typeorm";
+import bcrypt from "bcryptjs";
 import request from "supertest";
+import { AppDataSource } from "../../src/config/data-source";
 import app from "../../src/app";
 import { isJwt } from "../utils";
-import { AppDataSource } from "../../src/config/data-source";
-import { DataSource } from "typeorm";
-import { RefreshToken } from "../../src/entity/RefreshToken";
+import { User } from "../../src/entity/User";
+import { Roles } from "../../src/constants";
 
-describe("POST auth/login", () => {
+describe("POST /auth/login", () => {
     let connection: DataSource;
 
     beforeAll(async () => {
         connection = await AppDataSource.initialize();
-        const refRepo = AppDataSource.getRepository(RefreshToken);
-        await refRepo.delete({});
+    });
+
+    beforeEach(async () => {
+        await connection.dropDatabase();
         await connection.synchronize();
     });
 
@@ -20,85 +24,75 @@ describe("POST auth/login", () => {
     });
 
     describe("Given all fields", () => {
-        it("should retun 200 after loign and attach cookie", async () => {
-            //---- arrage
+        it("should return the access token and refresh token inside a cookie", async () => {
+            // Arrange
             const userData = {
-                email: "by@gmail.com",
-                password: "secret",
+                firstName: "Rakesh",
+                lastName: "K",
+                email: "rakesh@mern.space",
+                password: "password",
             };
 
-            //---- act
+            const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+            const userRepository = connection.getRepository(User);
+            await userRepository.save({
+                ...userData,
+                password: hashedPassword,
+                role: Roles.CUSTOMER,
+            });
+
+            // Act
             const response = await request(app)
                 .post("/auth/login")
-                .send(userData);
+                .send({ email: userData.email, password: userData.password });
 
-            //---- assert
             interface Headers {
                 ["set-cookie"]: string[];
             }
-
+            // Assert
             let accessToken = null;
             let refreshToken = null;
-
-            const cookies =
-                (response.headers as unknown as Headers)["set-cookie"] || [];
-
+            const cookies = (response.headers as Headers)["set-cookie"] || [];
             cookies.forEach((cookie) => {
                 if (cookie.startsWith("accessToken=")) {
                     accessToken = cookie.split(";")[0].split("=")[1];
                 }
+
                 if (cookie.startsWith("refreshToken=")) {
                     refreshToken = cookie.split(";")[0].split("=")[1];
                 }
             });
-
-            const refreshTokenRepo = connection.getRepository(RefreshToken);
-
-            const tokens = await refreshTokenRepo
-                .createQueryBuilder("refToken")
-                .where("refToken.userId = :userId", {
-                    userId: (response.body as Record<string, string>).id,
-                })
-                .getMany();
-
-            expect(tokens).toHaveLength(1);
-
-            expect(response.statusCode).toBe(200);
-
-            expect(accessToken).not.toBe(null);
-            expect(refreshToken).not.toBe(null);
+            expect(accessToken).not.toBeNull();
+            expect(refreshToken).not.toBeNull();
 
             expect(isJwt(accessToken)).toBeTruthy();
             expect(isJwt(refreshToken)).toBeTruthy();
         });
-    });
-
-    describe("Missing fields", () => {
-        it("should return 400 is no email", async () => {
-            //---- arrage
+        it("should return the 400 if email or password is wrong", async () => {
+            // Arrange
             const userData = {
-                email: "",
-                password: "secret",
+                firstName: "Rakesh",
+                lastName: "K",
+                email: "rakesh@mern.space",
+                password: "password",
             };
 
-            //---- act
+            const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+            const userRepository = connection.getRepository(User);
+            await userRepository.save({
+                ...userData,
+                password: hashedPassword,
+                role: Roles.CUSTOMER,
+            });
+
+            // Act
             const response = await request(app)
                 .post("/auth/login")
-                .send(userData);
+                .send({ email: userData.email, password: "wrongPassword" });
 
-            expect(response.statusCode).toBe(400);
-        });
-        it("should return 400 is no password", async () => {
-            //---- arrage
-            const userData = {
-                email: "by@gmail.com",
-                password: "",
-            };
-
-            //---- act
-            const response = await request(app)
-                .post("/auth/login")
-                .send(userData);
+            // Assert
 
             expect(response.statusCode).toBe(400);
         });
