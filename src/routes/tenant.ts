@@ -16,10 +16,17 @@ const tenantRepository = AppDataSource.getRepository(Tenants);
 const tenantService = new TenantService(tenantRepository);
 const tenantController = new TenantController(tenantService, logger);
 
-router.get("/", (req, res, next) => tenantController.getAll(req, res, next) as unknown as RequestHandler);
+router.get(
+    "/",
+    (req, res, next) =>
+        tenantController.getAll(req, res, next) as unknown as RequestHandler,
+);
 
-router.get("/:id", authenticate as RequestHandler, (req, res, next) =>
-    tenantController.getOne(req, res, next) as unknown as RequestHandler
+router.get(
+    "/:id",
+    authenticate as RequestHandler,
+    (req, res, next) =>
+        tenantController.getOne(req, res, next) as unknown as RequestHandler,
 );
 
 router.post(
@@ -28,7 +35,7 @@ router.post(
     canAccess([Roles.ADMIN]),
     tenantValidator,
     (req: CreateTenantRequest, res: Response, next: NextFunction) =>
-        tenantController.create(req, res, next) as unknown as RequestHandler
+        tenantController.create(req, res, next) as unknown as RequestHandler,
 );
 
 router.patch(
@@ -37,14 +44,15 @@ router.patch(
     canAccess([Roles.ADMIN]),
     tenantValidator,
     (req: CreateTenantRequest, res: Response, next: NextFunction) =>
-        tenantController.update(req, res, next) as unknown as RequestHandler
+        tenantController.update(req, res, next) as unknown as RequestHandler,
 );
 
 router.delete(
     "/:id",
     authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
-    (req, res, next) => tenantController.destroy(req, res, next) as unknown as RequestHandler
+    (req, res, next) =>
+        tenantController.destroy(req, res, next) as unknown as RequestHandler,
 );
 
 export default router;
