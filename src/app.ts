@@ -3,16 +3,16 @@ import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "./config/logges";
 import { HttpError } from "http-errors";
+import cors from "cors";
 import authRouter from "./routes/auth";
 import tenantRouter from "./routes/tenant";
 import userRouers from "./routes/user";
-import cors from "cors";
 
 const app = express();
 
 app.use(
     cors({
-        origin: ["http://localhost:5173/"],
+        origin: ["http://localhost:5174", "http://localhost:5173"],
         credentials: true,
     }),
 );
