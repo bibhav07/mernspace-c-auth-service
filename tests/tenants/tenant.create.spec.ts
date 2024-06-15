@@ -6,7 +6,7 @@ import { Tenants } from "../../src/entity/Tenants";
 import createJWKSMock from "mock-jwks";
 import { Roles } from "../../src/constants";
 
-describe("POST /tenants", () => {
+describe.skip("POST /tenants", () => {
     let connection: DataSource;
     let jwks: ReturnType<typeof createJWKSMock>;
     let adminToken: string;

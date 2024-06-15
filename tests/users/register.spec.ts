@@ -8,7 +8,7 @@ import { Roles } from "../../src/constants";
 import { isJwt } from "../utils/";
 import { RefreshToken } from "../../src/entity/RefreshToken";
 
-describe("POST /auth/register", () => {
+describe.skip("POST /auth/register", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
 

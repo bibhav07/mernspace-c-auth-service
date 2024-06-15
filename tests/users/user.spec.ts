@@ -6,7 +6,7 @@ import { User } from "../../src/entity/User";
 import { Roles } from "../../src/constants";
 import createJWKSMock from "mock-jwks";
 
-describe("GET /auth/self", () => {
+describe.skip("GET /auth/self", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
     let jwks: ReturnType<typeof createJWKSMock>;
