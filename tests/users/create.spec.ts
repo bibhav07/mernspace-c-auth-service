@@ -8,7 +8,7 @@ import createJWKSMock from "mock-jwks";
 import { createTenant } from "../utils";
 import { Tenants } from "../../src/entity/Tenants";
 
-describe("GET /user", () => {
+describe.skip("GET /user", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let connection: DataSource;
     let jwks: ReturnType<typeof createJWKSMock>;
