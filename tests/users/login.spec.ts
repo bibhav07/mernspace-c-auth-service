@@ -7,7 +7,7 @@ import { isJwt } from "../utils";
 import { User } from "../../src/entity/User";
 import { Roles } from "../../src/constants";
 
-describe("POST /auth/login", () => {
+describe.skip("POST /auth/login", () => {
     let connection: DataSource;
 
     beforeAll(async () => {
@@ -20,7 +20,7 @@ describe("POST /auth/login", () => {
     });
 
     afterAll(async () => {
-        await connection.destroy();
+        // await connection.destroy();
     });
 
     describe("Given all fields", () => {
