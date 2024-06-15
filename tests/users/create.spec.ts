@@ -26,7 +26,7 @@ describe.skip("GET /user", () => {
 
     afterAll(async () => {
         jwks.stop();
-        await connection.destroy();
+        // await connection.destroy();
     });
 
     describe("Given all fields", () => {

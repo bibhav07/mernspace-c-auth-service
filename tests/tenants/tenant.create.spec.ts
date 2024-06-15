@@ -27,7 +27,7 @@ describe("POST /tenants", () => {
     });
 
     afterAll(async () => {
-        await connection.destroy();
+        // await connection.destroy();
     });
 
     afterEach(async () => {
