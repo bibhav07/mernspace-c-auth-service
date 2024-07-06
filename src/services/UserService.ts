@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { User } from "../entity/User";
-import { LimitedUserData, userData } from "../types";
+import { LimitedUserData, userData, UserQueryParams } from "../types";
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
 import { RefreshToken } from "../entity/RefreshToken";
@@ -46,7 +46,12 @@ export class UserService {
 
     async findById(id: number) {
         return await this.userRepository.findOne({
-            where: { id },
+            where: {
+                id,
+            },
+            relations: {
+                tenant: true,
+            },
         });
     }
 
@@ -69,8 +74,16 @@ export class UserService {
         }
     }
 
-    async getAll() {
-        return await this.userRepository.find();
+    async getAll(validatedQuery: UserQueryParams) {
+        const queryBuilder = this.userRepository.createQueryBuilder();
+
+        const result = await queryBuilder
+            .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
+            .take(validatedQuery.perPage)
+            .getManyAndCount();
+
+        return result;
+        // return await this.userRepository.find();
     }
 
     async findByEmailWithPassword(email: string) {

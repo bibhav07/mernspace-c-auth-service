@@ -60,3 +60,8 @@ export interface createUserRequest extends Request {
 export interface UpdateUserRequest extends Request {
     body: LimitedUserData;
 }
+
+export interface UserQueryParams {
+    perPage: number;
+    currentPage: number;
+}
