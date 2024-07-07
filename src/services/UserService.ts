@@ -104,7 +104,6 @@ export class UserService {
             .getManyAndCount();
 
         return result;
-        // return await this.userRepository.find();
     }
 
     async findByEmailWithPassword(email: string) {
