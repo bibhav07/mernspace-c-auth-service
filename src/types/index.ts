@@ -64,4 +64,6 @@ export interface UpdateUserRequest extends Request {
 export interface UserQueryParams {
     perPage: number;
     currentPage: number;
+    q: string;
+    role: string;
 }

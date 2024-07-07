@@ -75,7 +75,6 @@ export class UserController {
         const validatedQuery = matchedData(req, {
             onlyValidData: true,
         });
-        console.log(validatedQuery);
 
         try {
             const [users, count] = await this.userService.getAll(
